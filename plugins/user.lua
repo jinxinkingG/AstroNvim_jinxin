@@ -9,4 +9,17 @@ return {
   --     require("lsp_signature").setup()
   --   end,
   -- },
+  {
+    "jinxinkingG/neovide-support.nvim",
+    event = "VimEnter",
+    config = function() require "neovide" end,
+  },
+  {
+    "folke/tokyonight.nvim",
+    event = "VimEnter",
+  },
+  {
+    "EdenEast/nightfox.nvim",
+    event = "VimEnter",
+  },
 }

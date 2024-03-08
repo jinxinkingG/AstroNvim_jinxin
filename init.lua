@@ -1,3 +1,19 @@
+function COLORSCHEMENAME()
+  local switch = {
+    [0] = "tokyonight-night",
+    [1] = "tokyonight-storm",
+    [2] = "tokyonight-moon",
+    [3] = "nightfox",
+    [4] = "duskfox",
+    [5] = "dawnfox",
+    [6] = "nordfox",
+    [7] = "carbonfox",
+    [8] = "terafox",
+    [9] = "astrotheme",
+  }
+  return switch[os.time() % 10]
+end
+--
 return {
   -- Configure AstroNvim updates
   updater = {
@@ -18,7 +34,7 @@ return {
   },
 
   -- Set colorscheme to use
-  colorscheme = "astrodark",
+  colorscheme = COLORSCHEMENAME(),
 
   -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
   diagnostics = {
@@ -27,6 +43,40 @@ return {
   },
 
   lsp = {
+    setup_handlers = {
+      volar = function()
+        require("lspconfig").volar.setup {
+          cmd = { "vue-language-server", "--stdio" },
+          init_options = {
+            typescript = {
+              {
+                tsdk = "/home/jojo/.local/share/nvim/mason/packages/vue-language-server/node_modules/typescript/lib",
+              },
+            },
+          },
+          filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
+        }
+      end,
+
+      tsserver = function()
+        require("lspconfig").tsserver.setup {
+          init_options = {
+            plugins = {
+              {
+                name = "@vue/typescript-plugin",
+                location = "/home/jojo/.local/share/nvim/mason/packages/vue-language-server/node_modules/@vue/typescript-plugin",
+                languages = { "javascript", "typescript", "vue" },
+              },
+            },
+          },
+          filetypes = {
+            "javascript",
+            "typescript",
+            "vue",
+          },
+        }
+      end,
+    },
     -- customize lsp formatting options
     formatting = {
       -- control auto formatting on save
